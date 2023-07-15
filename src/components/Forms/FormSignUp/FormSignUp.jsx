@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 const FormSignUp = ({ createUser, closeModal }) => {
   const [email, setEmail] = useState('');
@@ -12,6 +12,8 @@ const FormSignUp = ({ createUser, closeModal }) => {
     if (name === 'password') setPassword(value);
     if (name === 'check') setCheck(checked);
   };
+
+  console.log('setSelect', setSelect);
 
   //Приклади
 
