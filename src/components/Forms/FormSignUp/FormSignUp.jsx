@@ -1,46 +1,68 @@
-import { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 
-class FormSignUp extends Component {
-  state = {
-    email: '',
-    password: '',
-    check: false,
-    select: 'male',
-    radio: 'male',
+const FormSignUp = ({ createUser, closeModal }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [check, setCheck] = useState(false);
+  const [select, setSelect] = useState('male');
+  const [radio, setRadio] = useState('male');
+
+  const handleChange = ({ target: { name, value, checked } }) => {
+    if (name === 'email') setEmail(value);
+    if (name === 'password') setPassword(value);
+    if (name === 'check') setCheck(checked);
   };
 
-  handleChange = ({ target: { name, value, checked, type } }) => {
-    this.setState({
-      [name]: type === 'checkbox' ? checked : value,
-    });
-  };
-  handleRadio = value => {
-    this.setState({
-      radio: value,
-    });
+  //Приклади
+
+  // useEffect(() => {
+  //   if (email) console.log(111);
+  // }, [email]);
+
+  // useEffect(() => {
+  //   if (password) console.log(222);
+  // }, [password]);
+
+  // useEffect(() => {
+  //   console.log(333);
+  // }, [radio]);
+
+  // useEffect(() => {
+  //   console.log('Hello!');
+  // }, []);
+
+  // useEffect(() => {
+  //   if (email === 'dfdf@ff.dc' && password) console.log('Good');
+  // }, [email, password]);
+
+  // useEffect(() => {
+  //   console.log('!!!!');
+
+  //   return () => {
+  //     console.log('????');
+  //   };
+  // }, []);
+
+  const handleRadio = value => {
+    setRadio(value);
   };
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
     const data = {
-      ...this.state,
+      email,
+      password,
+      select,
+      radio,
     };
-    delete data.check;
 
-    this.props.createUser(data);
-    this.props.closeModal();
-    // this.setState({
-    // 	email: '',
-    // 	password: '',
-    // 	check: false,
-    // 	select: 'male',
-    // 	radio: 'male',
-    // })
+    createUser(data);
+    closeModal();
   };
-  render() {
-    const { email, password, check, select, radio } = this.state;
-    return (
-      <form onSubmit={this.handleSubmit}>
+
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="exampleInputEmail1" className="form-label">
             Email address
@@ -51,7 +73,7 @@ class FormSignUp extends Component {
             className="form-control"
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
-            onChange={this.handleChange}
+            onChange={handleChange}
             value={email}
           />
           <div id="emailHelp" className="form-text">
@@ -67,7 +89,7 @@ class FormSignUp extends Component {
             name="password"
             className="form-control"
             id="exampleInputPassword1"
-            onChange={this.handleChange}
+            onChange={handleChange}
             value={password}
           />
         </div>
@@ -77,8 +99,7 @@ class FormSignUp extends Component {
             type="checkbox"
             className="form-check-input"
             id="exampleCheck1"
-            onChange={this.handleChange}
-            // onChange={this.handleCheck}
+            onChange={handleChange}
             checked={check}
           />
           <label className="form-check-label" htmlFor="exampleCheck1">
@@ -90,7 +111,7 @@ class FormSignUp extends Component {
             name="select"
             type="select"
             className="form-select"
-            onChange={this.handleChange}
+            onChange={handleChange}
             value={select}
           >
             <option value="male">male</option>
@@ -98,17 +119,16 @@ class FormSignUp extends Component {
             <option value="other">other</option>
           </select>
         </div>
-        {/*  */}
         <div className="form-check">
           <input
             className="form-check-input"
             type="radio"
             name="radio"
             id="flexRadioDefault1"
-            onChange={() => this.handleRadio('male')}
+            onChange={() => handleRadio('male')}
             checked={radio === 'male'}
           />
-          <label className="form-check-label" for="flexRadioDefault1">
+          <label className="form-check-label" htmlFor="flexRadioDefault1">
             male
           </label>
         </div>
@@ -118,10 +138,10 @@ class FormSignUp extends Component {
             type="radio"
             name="radio"
             id="flexRadioDefault2"
-            onChange={() => this.handleRadio('female')}
+            onChange={() => handleRadio('female')}
             checked={radio === 'female'}
           />
-          <label className="form-check-label" for="flexRadioDefault2">
+          <label className="form-check-label" htmlFor="flexRadioDefault2">
             female
           </label>
         </div>
@@ -131,14 +151,13 @@ class FormSignUp extends Component {
             type="radio"
             name="radio"
             id="flexRadioDefault3"
-            onChange={() => this.handleRadio('other')}
+            onChange={() => handleRadio('other')}
             checked={radio === 'other'}
           />
-          <label className="form-check-label" for="flexRadioDefault3">
+          <label className="form-check-label" htmlFor="flexRadioDefault3">
             other
           </label>
         </div>
-        {/*  */}
         <button
           className="btn btn-primary"
           disabled={!check || !password || !email}
@@ -146,8 +165,162 @@ class FormSignUp extends Component {
           Submit
         </button>
       </form>
-    );
-  }
-}
+    </>
+  );
+};
 
 export default FormSignUp;
+
+// import { Component } from 'react';
+
+// class FormSignUp extends Component {
+//   state = {
+//     email: '',
+//     password: '',
+//     check: false,
+//     select: 'male',
+//     radio: 'male',
+//   };
+
+//   handleChange = ({ target: { name, value, checked, type } }) => {
+//     this.setState({
+//       [name]: type === 'checkbox' ? checked : value,
+//     });
+//   };
+//   handleRadio = value => {
+//     this.setState({
+//       radio: value,
+//     });
+//   };
+
+//   handleSubmit = e => {
+//     e.preventDefault();
+//     const data = {
+//       ...this.state,
+//     };
+//     delete data.check;
+
+//     this.props.createUser(data);
+//     this.props.closeModal();
+//     // this.setState({
+//     // 	email: '',
+//     // 	password: '',
+//     // 	check: false,
+//     // 	select: 'male',
+//     // 	radio: 'male',
+//     // })
+//   };
+//   render() {
+//     const { email, password, check, select, radio } = this.state;
+//     return (
+//       <form onSubmit={this.handleSubmit}>
+//         <div className="mb-3">
+//           <label htmlFor="exampleInputEmail1" className="form-label">
+//             Email address
+//           </label>
+//           <input
+//             type="email"
+//             name="email"
+//             className="form-control"
+//             id="exampleInputEmail1"
+//             aria-describedby="emailHelp"
+//             onChange={this.handleChange}
+//             value={email}
+//           />
+//           <div id="emailHelp" className="form-text">
+//             We'll never share your email with anyone else.
+//           </div>
+//         </div>
+//         <div className="mb-3">
+//           <label htmlFor="exampleInputPassword1" className="form-label">
+//             Password
+//           </label>
+//           <input
+//             type="password"
+//             name="password"
+//             className="form-control"
+//             id="exampleInputPassword1"
+//             onChange={this.handleChange}
+//             value={password}
+//           />
+//         </div>
+//         <div className="mb-3 form-check">
+//           <input
+//             name="check"
+//             type="checkbox"
+//             className="form-check-input"
+//             id="exampleCheck1"
+//             onChange={this.handleChange}
+//             // onChange={this.handleCheck}
+//             checked={check}
+//           />
+//           <label className="form-check-label" htmlFor="exampleCheck1">
+//             Check me out
+//           </label>
+//         </div>
+//         <div className="mb-3 ">
+//           <select
+//             name="select"
+//             type="select"
+//             className="form-select"
+//             onChange={this.handleChange}
+//             value={select}
+//           >
+//             <option value="male">male</option>
+//             <option value="female">female</option>
+//             <option value="other">other</option>
+//           </select>
+//         </div>
+//         {/*  */}
+//         <div className="form-check">
+//           <input
+//             className="form-check-input"
+//             type="radio"
+//             name="radio"
+//             id="flexRadioDefault1"
+//             onChange={() => this.handleRadio('male')}
+//             checked={radio === 'male'}
+//           />
+//           <label className="form-check-label" for="flexRadioDefault1">
+//             male
+//           </label>
+//         </div>
+//         <div className="form-check">
+//           <input
+//             className="form-check-input"
+//             type="radio"
+//             name="radio"
+//             id="flexRadioDefault2"
+//             onChange={() => this.handleRadio('female')}
+//             checked={radio === 'female'}
+//           />
+//           <label className="form-check-label" for="flexRadioDefault2">
+//             female
+//           </label>
+//         </div>
+//         <div className="form-check">
+//           <input
+//             className="form-check-input"
+//             type="radio"
+//             name="radio"
+//             id="flexRadioDefault3"
+//             onChange={() => this.handleRadio('other')}
+//             checked={radio === 'other'}
+//           />
+//           <label className="form-check-label" for="flexRadioDefault3">
+//             other
+//           </label>
+//         </div>
+//         {/*  */}
+//         <button
+//           className="btn btn-primary"
+//           disabled={!check || !password || !email}
+//         >
+//           Submit
+//         </button>
+//       </form>
+//     );
+//   }
+// }
+
+// export default FormSignUp;
